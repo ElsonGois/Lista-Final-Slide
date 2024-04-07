@@ -1,0 +1,114 @@
+#1)
+
+import threading
+
+def thread_func(name, start, end):
+    for i in range(start, end + 1):
+        print(f"{name}: {i}")
+
+# Criando as threads
+thread1 = threading.Thread(target=thread_func, args=("Thread 1", 1, 5))
+thread2 = threading.Thread(target=thread_func, args=("Thread 2", 1, 5))
+
+# Iniciando as threads
+thread1.start()
+thread2.start()
+
+# Esperando pelas threads terminarem
+thread1.join()
+thread2.join()
+
+
+#2)
+
+import threading
+
+# Variável global
+global_var = 0
+
+def increment_global():
+    global global_var
+    for _ in range(100):
+        global_var += 1
+
+# Criando as threads
+thread1 = threading.Thread(target=increment_global)
+thread2 = threading.Thread(target=increment_global)
+
+# Iniciando as threads
+thread1.start()
+thread2.start()
+
+# Esperando pelas threads terminarem
+thread1.join()
+thread2.join()
+
+# Mostrando o valor final da variável global
+print("Valor final da variável global:", global_var)
+
+
+#3)
+
+import threading
+import queue
+import random
+import time
+
+# Fila para armazenar os números aleatórios
+q = queue.Queue()
+
+# Função para gerar números aleatórios e colocá-los na fila
+def producer():
+    while True:
+        num = random.randint(1, 100)
+        q.put(num)
+        time.sleep(1)
+
+# Função para retirar números da fila e imprimir
+def consumer():
+    while True:
+        num = q.get()
+        print("Número retirado da fila:", num)
+        time.sleep(2)
+
+# Criando as threads
+thread_producer = threading.Thread(target=producer)
+thread_consumer = threading.Thread(target=consumer)
+
+# Iniciando as threads
+thread_producer.start()
+thread_consumer.start()
+
+# Aguardando um tempo para a execução
+time.sleep(10)
+
+
+
+#4)
+
+
+import threading
+import random
+import time
+
+# Função que as threads irão executar
+def thread_func(id):
+    wait_time = random.randint(1, 5)
+    print(f"Thread {id} iniciando. Vou esperar {wait_time} segundos.")
+    time.sleep(wait_time)
+    print(f"Thread {id} terminou.")
+
+# Lista para armazenar as threads
+threads = []
+
+# Criando e iniciando as threads
+for i in range(5):
+    thread = threading.Thread(target=thread_func, args=(i+1,))
+    threads.append(thread)
+    thread.start()
+
+# Esperando pelas threads terminarem
+for thread in threads:
+    thread.join()
+
+print("Todas as threads terminaram.")
